@@ -1,7 +1,7 @@
 const COMMANDS = [
   {
     name: 'faucet',
-    description: 'Request 0.5 Mumbai Polygon (MATIC)!',
+    description: 'Request 0.5 XRC!',
     options: [
       {
         name: 'address',
