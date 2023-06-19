@@ -62,10 +62,6 @@ const bot = {
       }
     });
 
-    client.on(Events.GuildMemberAdd, async (member) => {
-      console.log('member', member);
-    });
-
     client.login(TOKEN);
   },
 };
