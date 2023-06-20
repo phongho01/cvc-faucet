@@ -20,7 +20,7 @@ const bot = {
   },
   login: async (redis) => {
     const client = new Client({
-      intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages, GatewayIntentBits.DirectMessages],
+      intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages, GatewayIntentBits.DirectMessages],
       partials: ['CHANNEL'],
     });
 
@@ -61,6 +61,12 @@ const bot = {
         await interaction.reply({ embeds: 'An error has been occur', ephemeral: true });
       }
     });
+
+    client.on(Events.GuildMemberAdd, async member => {
+      const helpEmbedded = getHelpEmbedded();
+      helpEmbedded.setTitle("Welcome to Server");
+      client.users.cache.get(member.user.id).send({ embeds: [helpEmbedded] });
+    })
 
     client.login(TOKEN);
   },

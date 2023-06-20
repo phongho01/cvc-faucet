@@ -7,7 +7,7 @@ const COMMANDS = [
         name: 'address',
         type: 3,
         require: true,
-        description: 'Address of account will be received MATIC',
+        description: 'Address of account will be received XRC',
       },
     ],
   },
