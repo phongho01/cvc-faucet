@@ -6,7 +6,7 @@ const COMMANDS = [
       {
         name: 'address',
         type: 3,
-        require: true,
+        required: true,
         description: 'Address of account will be received XRC',
       },
     ],
