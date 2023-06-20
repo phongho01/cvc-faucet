@@ -45,7 +45,7 @@ const faucet = async (author, address, redis) => {
       NX: true,
     };
     const tx = await sendTransaction(address);
-    res = `<@${author}>, ${process.env.FAUCET_AMOUNT} ${CURRENCY_SYMBOL} are heading to your wallet, check ${EXPLORER_URL}/tx/${tx.hash} !`;
+    res = `<@${author}>, ${process.env.FAUCET_AMOUNT} ${CURRENCY_SYMBOL} are heading to your wallet.`;
     redis.set(author, Date.now(), redisOptions);
     redis.set(address, Date.now(), redisOptions);
   }
