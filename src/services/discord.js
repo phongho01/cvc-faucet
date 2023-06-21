@@ -30,7 +30,15 @@ const bot = {
 
     client.on(Events.MessageCreate, async (message) => {
       if (message.content && !message.author.bot) {
-        message.delete();
+        let splittedMessage = message.content.split(' ');
+        if (splittedMessage.length == 2 && (splittedMessage[0] == '/faucet' || splittedMessage[0] == '!faucet')) {
+          const author = message.author.id;
+          const address = splittedMessage[1];
+          const res = await faucet(author, address, redis);
+          message.reply(res);
+        } else {
+          message.delete();
+        }
       }
     });
 
@@ -62,11 +70,11 @@ const bot = {
       }
     });
 
-    client.on(Events.GuildMemberAdd, async member => {
+    client.on(Events.GuildMemberAdd, async (member) => {
       const helpEmbedded = getHelpEmbedded();
-      helpEmbedded.setTitle("Welcome to Server");
+      helpEmbedded.setTitle('Welcome to Server');
       client.users.cache.get(member.user.id).send({ embeds: [helpEmbedded] });
-    })
+    });
 
     client.login(TOKEN);
   },
