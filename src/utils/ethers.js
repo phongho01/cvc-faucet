@@ -38,7 +38,7 @@ const faucet = async (author, address, redis) => {
     res = `<@${author}>, invalid address wallet.`;
   } else if ((await redis.get(author)) || (await redis.get(address))) {
     const diff = diffTime(Date.now(), +((await redis.get(author)) || (await redis.get(address))) + process.env.TIME_PER_FAUCET * 1000);
-    res = `<@${author}>, you can only make one request per 24 hours. Please try again in ${diff}.`;
+    res = `<@${author}>, you can only make one request per 6 hours. Please try again in ${diff}.`;
   } else {
     const redisOptions = {
       EX: process.env.TIME_PER_FAUCET,
