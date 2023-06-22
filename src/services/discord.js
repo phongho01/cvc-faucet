@@ -7,6 +7,7 @@ const { getHelpEmbedded } = require('../utils/discord');
 
 const TOKEN = process.env.DISCORD_TOKEN;
 const CLIENT_ID = process.env.DISCORD_CLIENT_ID;
+const FAUCET_CHANNEL_ID = process.env.FAUCET_CHANNEL_ID;
 
 const rest = new REST({ version: '10' }).setToken(TOKEN);
 
@@ -29,7 +30,7 @@ const bot = {
     });
 
     client.on(Events.MessageCreate, async (message) => {
-      if (message.content && !message.author.bot) {
+      if (message.content && !message.author.bot && message.channelId == FAUCET_CHANNEL_ID) {
         let splittedMessage = message.content.split(' ');
         if (splittedMessage.length == 2 && (splittedMessage[0] == '/faucet' || splittedMessage[0] == '!faucet')) {
           const author = message.author.id;
