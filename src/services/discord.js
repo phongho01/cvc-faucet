@@ -36,8 +36,6 @@ const bot = {
           const address = splittedMessage[1];
           const res = await faucet(author, address, redis);
           message.reply(res);
-        } else {
-          message.delete();
         }
       }
     });
