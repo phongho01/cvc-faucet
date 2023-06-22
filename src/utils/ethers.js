@@ -30,6 +30,12 @@ const faucet = async (author, address, redis) => {
   let res = `<@${author}>, an error has been occurred. Please try again later.`;
 
   const remainingBalance = await getBalance(process.env.ACCOUNT_ADDRESS);
+  const times = remainingBalance.div(ethers.utils.parseEther(`${process.env.FAUCET_AMOUNT}`));
+  if (times.lte(10)) {
+    const text = `Remaining balance of account ${process.env.ACCOUNT_ADDRESS} is just enough to faucet ${Math.floor(times.toNumber())} times . Please deposit.`;
+    sendMessage(text);
+  }
+
   if (remainingBalance.lte(ethers.utils.parseEther(`${process.env.FAUCET_AMOUNT}`))) {
     res = `<@${author}>, sorry, remaining balance is not enough to faucet.`;
     const text = `Remaining balance of account ${process.env.ACCOUNT_ADDRESS} is not enough to faucet. Please deposit to continue.`;
