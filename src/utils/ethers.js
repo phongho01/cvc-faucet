@@ -36,9 +36,9 @@ const faucet = async (author, address, redis) => {
   const remainingBalance = await getBalance(process.env.ACCOUNT_ADDRESS);
   const times = remainingBalance.div(ethers.utils.parseEther(`${process.env.FAUCET_AMOUNT}`));
   if (times.lte(10)) {
-    const text = `Remaining balance of account ${process.env.ACCOUNT_ADDRESS} is just enough to faucet ${Math.floor(times.toNumber())} times (${formatBalance(
+    const text = `Remaining balance of account ${process.env.ACCOUNT_ADDRESS} is just enough to faucet some times (${formatBalance(
       remainingBalance
-    )} ${CURRENCY_SYMBOL} ). Please deposit.`;
+    )} ${CURRENCY_SYMBOL} ). Please deposit more.`;
     sendMessage(text);
   }
 
