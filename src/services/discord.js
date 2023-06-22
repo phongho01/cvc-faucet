@@ -41,7 +41,7 @@ const bot = {
           }
         } catch (error) {
           console.log('error', error);
-          message.reply('An error has been occur');
+          message.reply('An error has been occurred');
         }
       }
     });
@@ -70,7 +70,7 @@ const bot = {
         }
       } catch (error) {
         console.log('error', error);
-        interaction.reply({ embeds: 'An error has been occur', ephemeral: true });
+        interaction.reply({ content: 'An error has been occurred', ephemeral: true });
       }
     });
 
