@@ -1,1 +1,1 @@
-### Discord Server: [https://discord.gg/xRmffykm](https://discord.gg/xRmffykm) 
+### Discord Server: [https://discord.gg/RsqeW4Yv](https://discord.gg/RsqeW4Yv) 
