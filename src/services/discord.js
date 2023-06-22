@@ -31,12 +31,17 @@ const bot = {
 
     client.on(Events.MessageCreate, async (message) => {
       if (message.content && !message.author.bot && message.channelId == FAUCET_CHANNEL_ID) {
-        let splittedMessage = message.content.split(' ');
-        if (splittedMessage.length == 2 && (splittedMessage[0] == '/faucet' || splittedMessage[0] == '!faucet')) {
-          const author = message.author.id;
-          const address = splittedMessage[1];
-          const res = await faucet(author, address, redis);
-          message.reply(res);
+        try {
+          let splittedMessage = message.content.split(' ');
+          if (splittedMessage.length == 2 && (splittedMessage[0] == '/faucet' || splittedMessage[0] == '!faucet')) {
+            const author = message.author.id;
+            const address = splittedMessage[1];
+            const res = await faucet(author, address, redis);
+            message.reply(res);
+          }
+        } catch (error) {
+          console.log('error', error);
+          message.reply('An error has been occur');
         }
       }
     });
@@ -51,13 +56,13 @@ const bot = {
             const address = interaction.options.getString('address');
             await interaction.deferReply();
             const res = await faucet(author, address, redis);
-            await interaction.editReply(res);
+            interaction.editReply(res);
             break;
           }
           case 'help': {
             const helpEmbedded = getHelpEmbedded();
 
-            await interaction.reply({ embeds: [helpEmbedded], ephemeral: true });
+            interaction.reply({ embeds: [helpEmbedded], ephemeral: true });
             break;
           }
           default:
@@ -65,7 +70,7 @@ const bot = {
         }
       } catch (error) {
         console.log('error', error);
-        await interaction.reply({ embeds: 'An error has been occur', ephemeral: true });
+        interaction.reply({ embeds: 'An error has been occur', ephemeral: true });
       }
     });
 
