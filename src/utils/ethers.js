@@ -26,13 +26,19 @@ const sendTransaction = async (to) => {
   });
 };
 
+const formatBalance = (balance) => {
+  return Math.floor(ethers.utils.formatUnits(balance.toString(), 18));
+};
+
 const faucet = async (author, address, redis) => {
   let res = `<@${author}>, an error has been occurred. Please try again later.`;
 
   const remainingBalance = await getBalance(process.env.ACCOUNT_ADDRESS);
   const times = remainingBalance.div(ethers.utils.parseEther(`${process.env.FAUCET_AMOUNT}`));
   if (times.lte(10)) {
-    const text = `Remaining balance of account ${process.env.ACCOUNT_ADDRESS} is just enough to faucet ${Math.floor(times.toNumber())} times. Please deposit.`;
+    const text = `Remaining balance of account ${process.env.ACCOUNT_ADDRESS} is just enough to faucet ${Math.floor(times.toNumber())} times (${formatBalance(
+      remainingBalance
+    )} ${CURRENCY_SYMBOL} ). Please deposit.`;
     sendMessage(text);
   }
 
