@@ -38,7 +38,7 @@ const faucet = async (author, address, redis) => {
   if (times.lte(10)) {
     const text = `Remaining balance of account ${process.env.ACCOUNT_ADDRESS} is just enough to faucet some times (${formatBalance(
       remainingBalance
-    )} ${CURRENCY_SYMBOL} ). Please deposit more.`;
+    )} ${CURRENCY_SYMBOL}). Please deposit more.`;
     sendMessage(text);
   }
 
