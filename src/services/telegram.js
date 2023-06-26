@@ -17,9 +17,7 @@ const telegramBot = {
         address = process.env.ACCOUNT_ADDRESS;
       }
 
-
-
-      if (!isAddress) {
+      if (!isAddress(address)) {
         res = 'Address is not valid';
       } else {
         const balance = await getBalance(address);
