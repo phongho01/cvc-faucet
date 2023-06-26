@@ -27,7 +27,7 @@ const sendTransaction = async (to) => {
 };
 
 const formatBalance = (balance) => {
-  return Math.floor(ethers.utils.formatUnits(balance.toString(), 18));
+  return Number(ethers.utils.formatUnits(balance.toString(), 18)).toFixed(2);
 };
 
 const faucet = async (author, address, redis) => {
@@ -70,4 +70,5 @@ module.exports = {
   getBalance,
   isAddress,
   faucet,
+  formatBalance
 };
