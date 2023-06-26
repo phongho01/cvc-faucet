@@ -10,21 +10,25 @@ const telegramBot = {
     bot.onText(/\/balance(.*)/, async (msg, match) => {
       const chatId = msg.chat.id;
       let res = '';
+      try {
+        let address = match[1].trim();
 
-      let address = match[1].trim();
+        if (!address || address === 'faucet') {
+          address = process.env.ACCOUNT_ADDRESS;
+        }
 
-      if (!address || address === 'faucet') {
-        address = process.env.ACCOUNT_ADDRESS;
+        if (!isAddress(address)) {
+          res = 'Address is not valid';
+        } else {
+          const balance = await getBalance(address);
+          res = `Balance of ${address}: ${formatBalance(balance)} ${process.env.KURA_SYMBOL}`;
+        }
+
+        bot.sendMessage(chatId, res);
+      } catch (error) {
+        res = 'An error has been occurred';
+        bot.sendMessage(chatId, res);
       }
-
-      if (!isAddress(address)) {
-        res = 'Address is not valid';
-      } else {
-        const balance = await getBalance(address);
-        res = `Balance of ${address}: ${formatBalance(balance)} ${process.env.KURA_SYMBOL}`;
-      }
-
-      bot.sendMessage(chatId, res);
     });
   },
 };
