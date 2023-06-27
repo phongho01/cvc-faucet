@@ -7,7 +7,7 @@ const { isAddress, getBalance, formatBalance } = require('../utils/ethers');
 const telegramBot = {
   start() {
     console.log('Starting telegram bot...');
-    bot.onText(/\/balance(.*)/, async (msg, match) => {
+    bot.onText(/\/balance\s(.*)/, async (msg, match) => {
       const chatId = msg.chat.id;
       let res = '';
       try {
