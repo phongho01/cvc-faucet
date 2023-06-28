@@ -32,7 +32,7 @@ const bot = {
     client.on(Events.MessageCreate, async (message) => {
       if (message.content && !message.author.bot && message.channelId == FAUCET_CHANNEL_ID) {
         try {
-          let splittedMessage = message.content.split(' ');
+          let splittedMessage = message.content.replace("\n", " ").split(' ');
           if (splittedMessage.length == 2 && (splittedMessage[0] == '/faucet' || splittedMessage[0] == '!faucet')) {
             const author = message.author.id;
             const address = splittedMessage[1];
