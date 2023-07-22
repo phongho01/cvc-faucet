@@ -37,7 +37,7 @@ const bot = {
     });
 
     client.on(Events.MessageCreate, async (message) => {
-      if (message.channelId == FAUCET_CHANNEL_ID) {
+      if (message.channelId == FAUCET_CHANNEL_ID || message.content.startsWith('/faucet')) {
         writeDiscordLogs(message);
       }
       if (message.content && !message.author.bot && message.channelId == FAUCET_CHANNEL_ID) {
