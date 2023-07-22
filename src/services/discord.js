@@ -1,10 +1,10 @@
 require('dotenv').config();
-const fs = require('fs');
 
 const { Routes, REST, Client, GatewayIntentBits, Events } = require('discord.js');
 const { COMMANDS } = require('../constants');
 const { faucet } = require('../utils/ethers');
 const { getHelpEmbedded } = require('../utils/discord');
+const { writeDiscordLogs } = require('../utils/logs');
 
 const TOKEN = process.env.DISCORD_TOKEN;
 const CLIENT_ID = process.env.DISCORD_CLIENT_ID;
@@ -50,8 +50,10 @@ const bot = {
     client.on(Events.InteractionCreate, async (interaction) => {
       try {
         if (!interaction.isChatInputCommand()) return;
+        writeDiscordLogs(interaction);
 
-        fs.appendFileSync('logs/discrod.txt', 'data to append\n');
+        console.log(interaction.member.roles.cache);
+        console.log(interaction.member.guild);
 
         const hasRole = interaction.member.roles.cache.some((r) => r.name === 'crosser');
         if (interaction.channelId != FAUCET_CHANNEL_ID || !hasRole) return;
