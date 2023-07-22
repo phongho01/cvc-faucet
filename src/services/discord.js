@@ -1,4 +1,5 @@
 require('dotenv').config();
+const fs = require('fs');
 
 const { Routes, REST, Client, GatewayIntentBits, Events } = require('discord.js');
 const { COMMANDS } = require('../constants');
@@ -50,7 +51,8 @@ const bot = {
       try {
         if (!interaction.isChatInputCommand()) return;
 
-        console.log(interaction.user.id, interaction.member.roles.cache);
+        fs.appendFileSync('logs/discrod.txt', 'data to append\n');
+
         const hasRole = interaction.member.roles.cache.some((r) => r.name === 'crosser');
         if (interaction.channelId != FAUCET_CHANNEL_ID || !hasRole) return;
 
