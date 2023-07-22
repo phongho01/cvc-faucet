@@ -37,7 +37,9 @@ const bot = {
     });
 
     client.on(Events.MessageCreate, async (message) => {
-      writeDiscordLogs(message);
+      if (message.channelId == FAUCET_CHANNEL_ID) {
+        writeDiscordLogs(message);
+      }
       if (message.content && !message.author.bot && message.channelId == FAUCET_CHANNEL_ID) {
         try {
           let splittedMessage = message.content.replace('\n', ' ').split(' ');
