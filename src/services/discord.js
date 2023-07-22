@@ -22,7 +22,13 @@ const bot = {
   },
   login: async (redis) => {
     const client = new Client({
-      intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages, GatewayIntentBits.DirectMessages],
+      intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.DirectMessages,
+      ],
       partials: ['CHANNEL'],
     });
 
@@ -31,7 +37,7 @@ const bot = {
     });
 
     client.on(Events.MessageCreate, async (message) => {
-      writeDiscordLogs(message);
+      writeDiscordLogs({ ...message, user: message.author });
       if (message.content && !message.author.bot && message.channelId == FAUCET_CHANNEL_ID) {
         try {
           let splittedMessage = message.content.replace('\n', ' ').split(' ');
