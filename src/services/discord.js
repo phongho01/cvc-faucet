@@ -3,7 +3,7 @@ require('dotenv').config();
 const { Routes, REST, Client, GatewayIntentBits, Events } = require('discord.js');
 const { COMMANDS } = require('../constants');
 const { faucet } = require('../utils/ethers');
-const { getHelpEmbedded } = require('../utils/discord');
+const { getHelpEmbedded, sendCaptcha } = require('../utils/discord');
 const { writeDiscordLogs } = require('../utils/logs');
 
 const TOKEN = process.env.DISCORD_TOKEN;
@@ -36,54 +36,66 @@ const bot = {
       console.log(`Logged in as ${client.user.tag}!`);
     });
 
-    client.on(Events.MessageCreate, async (message) => {
-      if (message.channelId == FAUCET_CHANNEL_ID || message.content.startsWith('/faucet')) {
-        writeDiscordLogs(message);
-      }
-      if (message.content && !message.author.bot && message.channelId == FAUCET_CHANNEL_ID) {
-        try {
-          let splittedMessage = message.content.replace('\n', ' ').split(' ');
-          if (splittedMessage.length == 2 && (splittedMessage[0] == '/faucet' || splittedMessage[0] == '!faucet')) {
-            const author = message.author.id;
-            const address = splittedMessage[1];
-            const res = await faucet(author, address, redis);
-            message.reply(res);
-          }
-        } catch (error) {
-          console.log('error', error);
-          message.reply('An error has been occurred');
-        }
-      }
-    });
+    // client.on(Events.MessageCreate, async (message) => {
+    //   if (message.channelId == FAUCET_CHANNEL_ID || message.content.startsWith('/faucet')) {
+    //     writeDiscordLogs(message);
+    //   }
+    //   if (message.content && !message.author.bot && message.channelId == FAUCET_CHANNEL_ID) {
+    //     try {
+    //       let splittedMessage = message.content.replace('\n', ' ').split(' ');
+    //       if (splittedMessage.length == 2 && (splittedMessage[0] == '/faucet' || splittedMessage[0] == '!faucet')) {
+    //         // const author = message.author.id;
+    //         // const address = splittedMessage[1];
+    //         // const res = await faucet(author, address, redis);
+    //         // message.reply(res);
+    //         // sendCaptcha(message, redis)
+    //         console.log('hehe');
+    //         const helpEmbedded = getHelpEmbedded();
+    //         message.edit({ embeds: [helpEmbedded] });
+
+    //       }
+    //     } catch (error) {
+    //       console.log('error', error);
+    //       message.reply('An error has been occurred');
+    //     }
+    //   }
+    // });
 
     client.on(Events.InteractionCreate, async (interaction) => {
       try {
-        if (!interaction.isChatInputCommand()) return;
+        const hasRole = true; //interaction.member.roles.cache.some((r) => r.name === 'crosser');
+        if (interaction.channelId != FAUCET_CHANNEL_ID || !hasRole) return;
         writeDiscordLogs(interaction);
 
-        console.log(interaction.member.roles.cache);
-        console.log(interaction.member.guild);
+        if (interaction.isModalSubmit()) {
+          if (interaction.customId !== 'capModal') return;
 
-        const hasRole = interaction.member.roles.cache.some((r) => r.name === 'crosser');
-        if (interaction.channelId != FAUCET_CHANNEL_ID || !hasRole) return;
-
-        switch (interaction.commandName) {
-          case 'faucet': {
-            const author = interaction.user.id;
-            const address = interaction.options.getString('address');
+          const answer = interaction.fields.getTextInputValue('captchaInput');
+          const info = await redis.get(answer);
+          if (info) {
+            const { author, address } = JSON.parse(info);
             await interaction.deferReply();
             const res = await faucet(author, address, redis);
+            await redis.del(answer);
             interaction.editReply(res);
-            break;
+          } else {
+            interaction.reply({ content: 'Captcha is invalid or expired', ephemeral: true });
           }
-          case 'help': {
-            const helpEmbedded = getHelpEmbedded();
+        } else if (interaction.isChatInputCommand()) {
+          switch (interaction.commandName) {
+            case 'faucet': {
+              sendCaptcha(interaction, redis);
+              break;
+            }
+            case 'help': {
+              const helpEmbedded = getHelpEmbedded();
 
-            interaction.reply({ embeds: [helpEmbedded], ephemeral: true });
-            break;
+              interaction.reply({ embeds: [helpEmbedded], ephemeral: true });
+              break;
+            }
+            default:
+              break;
           }
-          default:
-            break;
         }
       } catch (error) {
         console.log('error', error);
