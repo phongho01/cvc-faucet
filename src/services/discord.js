@@ -61,9 +61,6 @@ const bot = {
         if (!interaction.isChatInputCommand()) return;
         writeDiscordLogs(interaction);
 
-        console.log(interaction.member.roles.cache);
-        console.log(interaction.member.guild);
-
         const hasRole = interaction.member.roles.cache.some((r) => r.name === 'crosser');
         if (interaction.channelId != FAUCET_CHANNEL_ID || !hasRole) return;
 
