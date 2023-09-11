@@ -66,9 +66,9 @@ const bot = {
 
         switch (interaction.commandName) {
           case 'faucet': {
+            await interaction.deferReply();
             const author = interaction.user.id;
             const address = interaction.options.getString('address');
-            await interaction.deferReply();
             const res = await faucet(author, address, redis);
             interaction.editReply(res);
             break;
