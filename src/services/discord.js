@@ -59,6 +59,7 @@ const bot = {
     client.on(Events.InteractionCreate, async (interaction) => {
       try {
         if (!interaction.isChatInputCommand()) return;
+        writeDiscordLogs(interaction);
 
         const hasRole = interaction.member.roles.cache.some((r) => r.name === 'crosser');
         if (interaction.channelId != FAUCET_CHANNEL_ID || !hasRole) return;
@@ -66,7 +67,6 @@ const bot = {
         switch (interaction.commandName) {
           case 'faucet': {
             await interaction.deferReply();
-            writeDiscordLogs(interaction);
             const author = interaction.user.id;
             const address = interaction.options.getString('address');
             const res = await faucet(author, address, redis);
@@ -75,12 +75,10 @@ const bot = {
           }
           case 'help': {
             const helpEmbedded = getHelpEmbedded();
-            writeDiscordLogs(interaction);
             interaction.reply({ embeds: [helpEmbedded], ephemeral: true });
             break;
           }
           default:
-            writeDiscordLogs(interaction);
             break;
         }
       } catch (error) {
