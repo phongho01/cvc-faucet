@@ -36,7 +36,7 @@ const faucet = async (author, address, redis) => {
   const remainingBalance = await getBalance(process.env.ACCOUNT_ADDRESS);
   const times = remainingBalance.div(ethers.utils.parseEther(`${process.env.FAUCET_AMOUNT}`));
   if (times.lte(20)) {
-    const text = `Remaining balance of account ${process.env.ACCOUNT_ADDRESS} is just enough to faucet some times (${formatBalance(
+    const text = `[${new Date().toLocaleString()}] [WARNING]: Remaining balance of account ${process.env.ACCOUNT_ADDRESS} is just enough to faucet some times (${formatBalance(
       remainingBalance
     )} ${CURRENCY_SYMBOL}). Please deposit more.`;
     sendMessage(text);
@@ -44,7 +44,7 @@ const faucet = async (author, address, redis) => {
 
   if (remainingBalance.lte(ethers.utils.parseEther(`${process.env.FAUCET_AMOUNT}`))) {
     res = `<@${author}>, sorry, remaining balance is not enough to faucet.`;
-    const text = `Remaining balance of account ${process.env.ACCOUNT_ADDRESS} is not enough to faucet. Please deposit to continue.`;
+    const text = `[${new Date().toLocaleString()}] [URGENT]: Remaining balance of account ${process.env.ACCOUNT_ADDRESS} is not enough to faucet. Please deposit to continue.`;
     sendMessage(text);
   } else if (!address || !isAddress(address)) {
     res = `<@${author}>, invalid address wallet.`;
