@@ -12,8 +12,9 @@ const healthCheckBySendTransaction = cron.schedule(
     setTimeout(async () => {
       const receipt = await provider.getTransactionReceipt(tx.hash);
       if (!receipt) {
-        const currentDate = new Date().toISOString().slice(0, 10);
-        sendMessage(`[HEALTH CHECK] [${currentDate}]: Error when send transaction with hash: ${tx.hash}`);
+        sendMessage(
+          `[${new Date().toLocaleString()}] [HEALTH CHECK]: Error when send transaction with hash: ${tx.hash}`
+        );
       }
     }, 3 * 60 * ONE_SECOND);
   },
