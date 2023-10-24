@@ -7,17 +7,17 @@ const RPC_URL = process.env.KURA_RPC_URL;
 const EXPLORER_URL = process.env.KURA_EXPLORER;
 const CURRENCY_SYMBOL = process.env.KURA_SYMBOL;
 
+const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
+
 const isAddress = (address) => {
   return ethers.utils.isAddress(address);
 };
 
 const getBalance = async (account) => {
-  const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
   return provider.getBalance(account);
 };
 
 const sendTransaction = async (to) => {
-  const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
   const wallet = new ethers.Wallet(process.env.ACCOUNT_PRIVATE_KEY, provider);
 
   return wallet.sendTransaction({
@@ -70,5 +70,6 @@ module.exports = {
   getBalance,
   isAddress,
   faucet,
-  formatBalance
+  formatBalance,
+  provider
 };

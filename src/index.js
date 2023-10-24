@@ -2,6 +2,7 @@ require('dotenv').config();
 const { createClient } = require('redis');
 const discordBot = require('./services/discord');
 const telegramBot = require('./services/telegram');
+const { healthCheckBySendTransaction } = require('./jobs/health-check');
 
 const client = createClient();
 
@@ -14,4 +15,5 @@ discordBot.start().then(async () => {
   await client.connect();
   discordBot.login(client);
   telegramBot.start();
+  healthCheckBySendTransaction.start();
 });
