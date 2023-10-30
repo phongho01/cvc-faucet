@@ -16,7 +16,7 @@ const healthCheckBySendTransaction = cron.schedule(
           `[${new Date().toLocaleString()}] [HEALTH CHECK]: Error when send transaction with hash: ${tx.hash}`
         );
       }
-    }, 3 * 60 * ONE_SECOND);
+    }, 5 * 60 * ONE_SECOND);
   },
   {
     scheduled: false,
