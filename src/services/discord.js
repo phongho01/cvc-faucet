@@ -9,6 +9,7 @@ const { writeDiscordLogs } = require('../utils/logs');
 const TOKEN = process.env.DISCORD_TOKEN;
 const CLIENT_ID = process.env.DISCORD_CLIENT_ID;
 const FAUCET_CHANNEL_ID = process.env.FAUCET_CHANNEL_ID;
+const PERMISSION_ROLE = process.env.PERMISSION_ROLE;
 
 const rest = new REST({ version: '10' }).setToken(TOKEN);
 
@@ -61,8 +62,13 @@ const bot = {
         if (!interaction.isChatInputCommand()) return;
         writeDiscordLogs(interaction);
 
-        const hasRole = interaction.member.roles.cache.some((r) => r.name === 'crosser');
-        if (interaction.channelId != FAUCET_CHANNEL_ID || !hasRole) return;
+        const hasRole = interaction?.member?.roles?.cache?.some((r) => r.name === PERMISSION_ROLE);
+        if (interaction.channelId != FAUCET_CHANNEL_ID || !hasRole) {
+          interaction.reply({
+            content: 'Please claim Developer role on <#974602558364606494> channel and do this action on <#1120194647420063795> channel',
+            ephemeral: true,
+          });
+        }
 
         switch (interaction.commandName) {
           case 'faucet': {
