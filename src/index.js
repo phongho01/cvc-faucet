@@ -14,6 +14,6 @@ discordBot.start().then(async () => {
   client.on('error', (err) => console.log('Redis Client Error', err));
   await client.connect();
   discordBot.login(client);
-  telegramBot.start();
+  // telegramBot.start();
   healthCheckBySendTransaction.start();
 });
