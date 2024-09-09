@@ -37,25 +37,25 @@ const bot = {
       console.log(`Logged in as ${client.user.tag}!`);
     });
 
-    client.on(Events.MessageCreate, async (message) => {
-      if (message.channelId == FAUCET_CHANNEL_ID || message.content.startsWith('/faucet')) {
-        writeDiscordLogs(message);
-      }
-      if (message.content && !message.author.bot && message.channelId == FAUCET_CHANNEL_ID) {
-        try {
-          let splittedMessage = message.content.replace('\n', ' ').split(' ');
-          if (splittedMessage.length == 2 && (splittedMessage[0] == '/faucet' || splittedMessage[0] == '!faucet')) {
-            const author = message.author.id;
-            const address = splittedMessage[1];
-            const res = await faucet(author, address, redis);
-            message.reply(res);
-          }
-        } catch (error) {
-          console.log('error', error);
-          message.reply('An error has been occurred');
-        }
-      }
-    });
+    // client.on(Events.MessageCreate, async (message) => {
+    //   if (message.channelId == FAUCET_CHANNEL_ID || message.content.startsWith('/faucet')) {
+    //     writeDiscordLogs(message);
+    //   }
+    //   if (message.content && !message.author.bot && message.channelId == FAUCET_CHANNEL_ID) {
+    //     try {
+    //       let splittedMessage = message.content.replace('\n', ' ').split(' ');
+    //       if (splittedMessage.length == 2 && (splittedMessage[0] == '/faucet' || splittedMessage[0] == '!faucet')) {
+    //         const author = message.author.id;
+    //         const address = splittedMessage[1];
+    //         const res = await faucet(author, address, redis);
+    //         message.reply(res);
+    //       }
+    //     } catch (error) {
+    //       console.log('error', error);
+    //       message.reply('An error has been occurred');
+    //     }
+    //   }
+    // });
 
     client.on(Events.InteractionCreate, async (interaction) => {
       try {
