@@ -69,6 +69,8 @@ const bot = {
             content: `Please claim Developer role on <#${WELCOME_CHANNEL_ID}> channel and do this action on <#${FAUCET_CHANNEL_ID}> channel`,
             ephemeral: true,
           });
+
+          return;
         }
 
         switch (interaction.commandName) {
