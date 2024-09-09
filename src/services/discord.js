@@ -96,7 +96,7 @@ const bot = {
       }
     });
 
-    client.on(Events.GuildMemberAdd, async (member) => {
+    client.on(Events.guildMemberAvailable, async (member) => {
       const helpEmbedded = getHelpEmbedded();
       helpEmbedded.setTitle('Welcome to Server');
       client.users.cache.get(member.user.id).send({ embeds: [helpEmbedded] });
