@@ -1,13 +1,15 @@
+require('dotenv').config();
+
 const COMMANDS = [
   {
     name: 'faucet',
-    description: 'Request 0.5 XRC!',
+    description: `Request ${process.env.FAUCET_AMOUNT} ${process.env.KURA_SYMBOL}!`,
     options: [
       {
         name: 'address',
         type: 3,
         required: true,
-        description: 'Address of account will be received XRC',
+        description: `Address of account will be received ${process.env.KURA_SYMBOL}`,
       },
     ],
   },
@@ -18,5 +20,5 @@ const COMMANDS = [
 ];
 
 module.exports = {
-    COMMANDS
-}
+  COMMANDS,
+};
