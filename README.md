@@ -140,5 +140,28 @@ The cron job ("health-check") sends a small transaction daily (default 07:00 Asi
 - `npm run dev` – Start with nodemon (development)
 - `npm start` – Start with Node (production)
 
+### 15) Rotate and Compress Logs (system logrotate)
+Use logrotate to rotate daily, keep 30 days, and compress old logs. Replace the path with your actual project path if different.
+
+```bash
+sudo tee /etc/logrotate.d/cvc-faucet >/dev/null <<'CONF'
+~/cvc-faucet/logs/discord.log {
+  daily
+  rotate 30
+  missingok
+  notifempty
+  compress
+  delaycompress
+  copytruncate
+  dateext
+  dateformat -%Y%m%d
+}
+CONF
+```
+
+Notes:
+- The rotated files will be stored in the same `logs/` directory, e.g., `discord.log-YYYYMMDD.gz`.
+- Test run: `sudo logrotate -d /etc/logrotate.d/cvc-faucet` (dry-run) or force: `sudo logrotate -f /etc/logrotate.d/cvc-faucet`.
+
 ### Reference
 - Original Discord server link: [Discord Server Invite](https://discord.gg/RsqeW4Yv)
