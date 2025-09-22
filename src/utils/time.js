@@ -1,8 +1,8 @@
 const diffTime = (start, end) => {
   let diff = end - start;
-  const hours = Math.floor(diff / 1000 / 60 / 60);
+  let hours = Math.floor(diff / 1000 / 60 / 60);
   diff -= hours * 1000 * 60 * 60;
-  const minutes = Math.floor(diff / 1000 / 60);
+  let minutes = Math.floor(diff / 1000 / 60);
 
   // If using time pickers with 24 hours format, add the below line get exact hours
   if (hours < 0) hours = hours + 24;
